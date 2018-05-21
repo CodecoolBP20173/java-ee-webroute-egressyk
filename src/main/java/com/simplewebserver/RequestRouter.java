@@ -3,11 +3,10 @@ package com.simplewebserver;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class RequestRouter {
+class RequestRouter {
     private static RequestRouter ourInstance;
     private RequestResponder requestResponder;
 
@@ -17,6 +16,7 @@ public class RequestRouter {
 
     private RequestRouter(RequestResponder responder) {
         this.requestResponder = responder;
+        ourInstance = this;
     }
 
     void setupRoutes(HttpServer server, HttpHandler handler) {
