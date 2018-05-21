@@ -1,5 +1,6 @@
 package com.simplewebserver;
 
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
@@ -29,11 +30,14 @@ class RequestRouter {
         }
     }
 
-    String getResponseForPath(String path) {
+    String getResponseForPath(String path, HttpExchange httpExchange) {
+        String requestMethod = httpExchange.getRequestMethod().toLowerCase();
         Method[] responderMethods = requestResponder.getClass().getMethods();
         for (Method method : responderMethods) {
             WebRoute annotation = method.getAnnotation(WebRoute.class);
-            if (annotation != null && annotation.urlPath().equals(path)) {
+            if (annotation != null
+                    && annotation.urlPath().equals(path)
+                    && annotation.requestMethod().equals(requestMethod)) {
                 try {
                     return (String)method.invoke(requestResponder);
                 } catch (IllegalAccessException | InvocationTargetException e) {
@@ -41,6 +45,6 @@ class RequestRouter {
                 }
             }
         }
-        return "404: Page not found";
+        return "404";
     }
 }

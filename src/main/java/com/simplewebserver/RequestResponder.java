@@ -15,6 +15,11 @@ public class RequestResponder {
         return "You're on the index page";
     }
 
+    @WebRoute(urlPath = "/", requestMethod = "post")
+    public String indexPostHandler(){
+        return "You're on the index page, with POST";
+    }
+
     @WebRoute(urlPath = "/test")
     public String testHandler() {
         return "You're on the test page";

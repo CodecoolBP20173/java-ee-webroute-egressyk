@@ -9,8 +9,8 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
 public class SimpleServer {
-    static RequestResponder requestResponder = RequestResponder.getInstance();
-    static RequestRouter requestRouter = RequestRouter.getInstance(requestResponder);
+    private static RequestResponder requestResponder = RequestResponder.getInstance();
+    private static RequestRouter requestRouter = RequestRouter.getInstance(requestResponder);
 
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -22,8 +22,9 @@ public class SimpleServer {
     private static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
-            String response = requestRouter.getResponseForPath(httpExchange.getRequestURI().toString());
-            httpExchange.sendResponseHeaders(200, response.length());
+            String response = requestRouter.getResponseForPath(httpExchange.getRequestURI().toString(), httpExchange);
+            int responseCode = (!response.equals("404")) ? 200 : 404;
+            httpExchange.sendResponseHeaders(responseCode, response.length());
             OutputStream outputStream = httpExchange.getResponseBody();
             outputStream.write(response.getBytes());
             outputStream.close();
