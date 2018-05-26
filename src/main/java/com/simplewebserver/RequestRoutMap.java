@@ -1,13 +1,15 @@
 package com.simplewebserver;
 
-public class RequestResponder {
-    private static RequestResponder ourInstance = new RequestResponder();
+import java.util.List;
 
-    static RequestResponder getInstance() {
+public class RequestRoutMap {
+    private static RequestRoutMap ourInstance = new RequestRoutMap();
+
+    static RequestRoutMap getInstance() {
         return ourInstance;
     }
 
-    private RequestResponder() {
+    private RequestRoutMap() {
     }
 
     @WebRoute(urlPath = "/")
@@ -23,6 +25,12 @@ public class RequestResponder {
     @WebRoute(urlPath = "/test")
     public String testHandler() {
         return "You're on the test page";
+    }
+
+    @WebRoute(urlPath = "/test/<username>")
+    public String testUsernameHandler(List<String> variables) {
+        String username = variables.get(0);
+        return String.format("Hi %s, you're on the test page", username);
     }
 
     @WebRoute(urlPath = "/othertest")

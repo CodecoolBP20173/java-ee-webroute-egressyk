@@ -9,8 +9,8 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
 public class SimpleServer {
-    private static RequestResponder requestResponder = RequestResponder.getInstance();
-    private static RequestRouter requestRouter = RequestRouter.getInstance(requestResponder);
+    private static RequestRoutMap requestRoutMap = RequestRoutMap.getInstance();
+    private static RequestRouter requestRouter = RequestRouter.getInstance(requestRoutMap);
 
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
